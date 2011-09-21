@@ -137,16 +137,15 @@ class Call < ActiveRecord::Base
   end
 
   def location
-    unless Carmen.countries.detect { |title, abbr| abbr == self.caller_country }
-      return "an unknown caller"
-    end
     if caller_states = Carmen::states(self.caller_country)
       title_and_abbreviation = caller_states.detect { |title, abbr| abbr == self.caller_state }
       if title_and_abbreviation
         return "someone in #{self.caller_city}, #{title_and_abbreviation.first}"
       end
     end
-    return "someone in #{self.caller_city}, #{self.caller_state}"
+    "someone in #{self.caller_city}, #{self.caller_state}"
+  rescue Carmen::StatesNotSupported => e
+    "an unknown caller"
   end
 
   def self.connect_random_strangers
