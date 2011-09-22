@@ -16,7 +16,7 @@
 <script type="text/javascript" charset="utf-8">
   $(document).ready(function() {
     function loadDashboard() {
-      $.get('/calls/dashboard', function(data) {
+      $.get('/dashboard/stats', function(data) {
         $("#people-chatting tbody").html('');
         $.each(data.live_calls.waiting, function(i, value) {
           $("#people-chatting tbody").append("<tr><td>" + (i + 1) + "</td><td>" + value.location + "</td></tr>");
