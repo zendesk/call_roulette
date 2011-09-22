@@ -47,3 +47,8 @@ Non-heroku deploys can just:
     export=CALL_ROULETTE_PHONE_NUMBER="(123) 456 7890"
     
     foreman start
+
+Call Flow
+---------
+
+![State Diagram](http://f.cl.ly/items/0E1K0i040n0L132k1m0B/CallRouletteStateDiagram.png "State Diagram")
