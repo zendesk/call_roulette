@@ -38,3 +38,12 @@ This app can be deployed to Heroku in the following steps:
 
     # Start background process that routes calls
     heroku scale web=1 clock=1
+
+Non-heroku deploys can just:
+
+    export=TWILIO_ACCOUNT_SID=...
+    export=TWILIO_AUTH_TOKEN=...
+    export=TWILIO_TUNNEL_URL=http://name-of-app.herokuapp.com
+    export=CALL_ROULETTE_PHONE_NUMBER="(123) 456 7890"
+    
+    foreman start
