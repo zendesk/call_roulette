@@ -53,4 +53,7 @@ Call Flow (Clean)
 
 ![State Diagram Clean](http://f.cl.ly/items/3D3Y0z2J1z1Y2F0t2n17/CallRouletteStateDiagramClean.png "State Diagram Clean")
 
+Call Flow (Full)
+----------------
+
 ![State Diagram](http://f.cl.ly/items/0E1K0i040n0L132k1m0B/CallRouletteStateDiagram.png "State Diagram")
