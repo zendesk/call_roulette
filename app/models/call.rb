@@ -24,7 +24,7 @@ class Call < ActiveRecord::Base
     end
 
     on_render(:greeting) do |call, x|
-      x.Say "Please wait while we find someone for you to talk to"
+      x.Say "Connecting you to someone"
       x.Redirect flow_url(:greeted)
     end
 
@@ -32,7 +32,7 @@ class Call < ActiveRecord::Base
       HOLD_MUSIC.sort_by { rand }.each do |url|
         x.Play url
       end
-      x.Say "You've been waiting way to long! Goodbye"
+      x.Say "You've been waiting way too long! Goodbye"
       x.Hangup
     end
 
@@ -140,12 +140,19 @@ class Call < ActiveRecord::Base
     if caller_states = Carmen::states(self.caller_country)
       title_and_abbreviation = caller_states.detect { |title, abbr| abbr == self.caller_state }
       if title_and_abbreviation
-        return "someone in #{self.caller_city}, #{title_and_abbreviation.first}"
+        return "Someone in #{self.caller_city.capitalize}, #{title_and_abbreviation.first}"
       end
     end
-    "someone in #{self.caller_city}, #{self.caller_state}"
+    "Someone in #{self.caller_city.capitalize}, #{self.caller_state}"
   rescue Carmen::StatesNotSupported => e
-    "an unknown caller"
+    "An Unknown Caller"
+  end
+
+  def as_json(options = {})
+    {
+      :location => location,
+      :conference_name => conference_name
+    }
   end
 
   def self.connect_random_strangers

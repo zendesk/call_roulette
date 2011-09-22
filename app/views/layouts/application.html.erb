@@ -4,11 +4,31 @@
   <title>CallRoulette</title>
   <%= stylesheet_link_tag    "application" %>
   <%= javascript_include_tag "application" %>
+  <link rel="stylesheet" href="http://twitter.github.com/bootstrap/1.3.0/bootstrap.min.css">
   <%= csrf_meta_tags %>
+  <style type="text/css" media="screen">
+    body {
+      padding-top: 60px;
+    }
+  </style>
 </head>
 <body>
 
-<%= yield %>
+  <div class="topbar">
+    <div class="fill">
+      <div class="container">
+        <a class="brand" href="/">Call Roulette</a>
+        <ul class="nav">
+          <li class="active"><%= link_to 'Home', root_path %></li>
+          <li><a>Call: <%= ENV['CALL_ROULETTE_PHONE_NUMBER'] %></a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+    <%= yield %>
+  </div>
 
 </body>
 </html>

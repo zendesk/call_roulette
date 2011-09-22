@@ -1,7 +1,23 @@
 class CallsController < ApplicationController
   skip_before_filter :verify_authenticity_token
-  before_filter :parse_params
+  before_filter :parse_params, :except => [:index]
   before_filter :find_and_update_call, :only => [:flow, :destroy]
+
+  def index
+  end
+
+  def dashboard
+    live_calls = {
+      :waiting => Call.where("state = ?", "waiting"),
+      :in_conference => Call.where("state = ?", "in_conference")
+    }
+
+    render :json => {
+      :live_calls => live_calls,
+      :live_calls_count => Call.where("state in (?)", ["waiting", "in_conference"]).count,
+      :total_calls_count => Call.count
+    }
+  end
 
   def create
     @call = Call.create!(@parsed_params)

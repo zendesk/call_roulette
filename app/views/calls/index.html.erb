@@ -1,0 +1,39 @@
+<div class="content">
+  <h3>People Chatting <span class='label success' id='live-calls'>loading ...</span></h3>
+  <table id="people-chatting" class="zebra-striped">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Location</th>
+      </tr>
+    </thead>
+    <tbody>
+    </tbody>
+  </table>
+  <h3>Total Calls <span class='label success' id='total-calls'>loading ...</span></h3>
+</div>
+
+<script type="text/javascript" charset="utf-8">
+  $(document).ready(function() {
+    function loadDashboard() {
+      $.get('/calls/dashboard', function(data) {
+        $("#people-chatting tbody").html('');
+        $.each(data.live_calls.waiting, function(i, value) {
+          $("#people-chatting tbody").append("<tr><td>" + (i + 1) + "</td><td>" + value.location + "</td></tr>");
+        });
+
+        var offset = data.live_calls.waiting.length;
+
+        $.each(data.live_calls.in_conference, function(i, value) {
+          $("#people-chatting tbody").append("<tr><td>" + (i + offset + 1) + "</td><td>" + value.location + "</td></tr>");
+        });
+        $('#live-calls').html(data.live_calls_count);
+        $('#total-calls').html(data.total_calls_count);
+      });
+
+      setTimeout(loadDashboard, 500);
+    }
+
+    loadDashboard();
+  });
+</script>
