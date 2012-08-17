@@ -45,8 +45,10 @@ Non-heroku deploys can just:
     export=TWILIO_AUTH_TOKEN=...
     export=TWILIO_TUNNEL_URL=http://name-of-app.herokuapp.com
     export=CALL_ROULETTE_PHONE_NUMBER="(123) 456 7890"
-    
-    foreman start
+
+    bundle install
+
+    bundle exec foreman start
 
 Call Flow (Clean)
 -----------------

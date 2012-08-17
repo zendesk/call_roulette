@@ -3,7 +3,7 @@ source 'http://rubygems.org'
 gem 'rails', '3.1.0'
 
 gem 'twilio-ruby'
-gem 'call_center', '0.0.2'
+gem 'call_center', '~> 0.1.3'
 gem 'clockwork'
 gem 'carmen'
 
@@ -19,6 +19,7 @@ group :development do
   gem 'sqlite3'
   gem 'pre-commit'
   gem 'ruby-graphviz'
+  gem 'foreman'
 end
 
 group :test do

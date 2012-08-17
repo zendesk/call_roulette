@@ -8,54 +8,58 @@ class Call < ActiveRecord::Base
 
     state :greeting do
       event :greeted, :to => :waiting
+
+      response do |x|
+        x.Say "Connecting you to someone"
+        x.Redirect flow_url(:greeted)
+      end
     end
 
     state :waiting do
       event :put_in_conference, :to => :in_conference
       event :time_out, :to => :timed_out
+
+      response do |x|
+        HOLD_MUSIC.sort_by { rand }.each do |url|
+          x.Play url
+        end
+        x.Say "You've been waiting way too long! Goodbye"
+        x.Hangup
+      end
+
+      after(:success) do
+        update_attributes(:waiting_at => Time.now)
+      end
     end
 
     state :in_conference do
       event :cleanup, :to => :greeting
+
+      response do |x, call|
+        conference = Conference.new(conference_name)
+        other_call = conference.other(call)
+        x.Say "You are talking to #{other_call.location}... Press star to skip."
+        x.Dial :hangupOnStar => true do
+          x.Conference conference_name, :endConferenceOnExit => true
+        end
+        x.Redirect flow_url(:cleanup)
+      end
+    end
+
+    state :ended do
+      after(:success) do
+        update_attributes(:ended_at => Time.now)
+      end
+    end
+
+    state :timed_out do
+      response do |x|
+        x.Say "Sorry we couldn't find someone for you. Please call back later and try again"
+      end
     end
 
     state any do
       event :hang_up, :to => :ended
-    end
-
-    on_render(:greeting) do |call, x|
-      x.Say "Connecting you to someone"
-      x.Redirect flow_url(:greeted)
-    end
-
-    on_render(:waiting) do |call, x|
-      HOLD_MUSIC.sort_by { rand }.each do |url|
-        x.Play url
-      end
-      x.Say "You've been waiting way too long! Goodbye"
-      x.Hangup
-    end
-
-    on_render(:in_conference) do |call, x|
-      conference = Conference.new(conference_name)
-      other_call = conference.other(call)
-      x.Say "You are talking to #{other_call.location}... Press star to skip."
-      x.Dial :hangupOnStar => true do
-        x.Conference conference_name, :endConferenceOnExit => true
-      end
-      x.Redirect flow_url(:cleanup)
-    end
-
-    on_render(:timed_out) do |call, x|
-      x.Say "Sorry we couldn't find someone for you. Please call back later and try again"
-    end
-
-    on_flow_to(:waiting) do |call, transition|
-      call.update_attributes(:waiting_at => Time.now)
-    end
-
-    on_flow_to(:ended) do |call, transition|
-      call.update_attributes(:ended_at => Time.now)
     end
   end
 
@@ -144,7 +148,7 @@ class Call < ActiveRecord::Base
       end
     end
     "Someone in #{self.caller_city.capitalize}, #{self.caller_state}"
-  rescue Carmen::StatesNotSupported => e
+  rescue Carmen::StatesNotSupported, Carmen::NonexistentCountry
     "An Unknown Caller"
   end
 
