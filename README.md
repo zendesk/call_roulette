@@ -1,7 +1,7 @@
 Call Roulette
 =============
 
-Sample Rails 3 app using [call_center](https://github.com/zendesk/call_roulette)
+Sample Rails 3 app using [call_center](https://github.com/zendesk/call_center)
 
 Overview
 --------
