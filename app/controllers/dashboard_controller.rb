@@ -2,6 +2,7 @@ class DashboardController < ApplicationController
   skip_before_filter :verify_authenticity_token
 
   def index
+    @special_message = ENV["SPECIAL_MESSAGE"] || ''
   end
 
   def stats
