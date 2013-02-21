@@ -1,6 +1,6 @@
 source 'http://rubygems.org'
 
-gem 'rails', '3.1.10'
+gem 'rails', '3.1.11'
 
 gem 'twilio-ruby'
 gem 'call_center', '~> 0.1.3'
@@ -28,7 +28,7 @@ group :test do
   gem 'factory_girl_rails'
   gem 'rspec'
   gem 'rspec-rails'
-  gem 'mocha'
+  gem 'mocha', :require => 'mocha/setup'
   gem 'guard'
   gem 'guard-rspec'
   gem 'spork', '~> 0.9.0.rc'
