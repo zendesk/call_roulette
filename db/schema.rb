@@ -45,8 +45,8 @@ ActiveRecord::Schema.define(:version => 20110921074035) do
     t.string   "called_city"
     t.datetime "waiting_at"
     t.datetime "ended_at"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",         :null => false
+    t.datetime "updated_at",         :null => false
   end
 
 end
